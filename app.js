@@ -1,122 +1,244 @@
 "use strict";
 
-var message;
+const text = "some text";
 
-// let message = "Hello World!";
-// message = 42;
+// const number = Number(text);
+// const number2 = +text;
 
-// const message = "Hello!";
-// message = 1;
-// console.log(message);
+// console.log(typeof text);
+// console.log(typeof number);
+// console.log(number2);
+// console.log(typeof number2);
 
-// const user = "John";
-// const User = "Jane";
+// const number3 = parseFloat("42");
 
-// console.log(user);
-// console.log(User);
+// const sum = "1000auh";
 
-// const num = 123;
-// const userName = "Jane";
-// let userName = 123
-// const API_URL = "";
-// const userFirstName = "Jane";
+// const parsedSum = parseFloat(sum);
 
-// const user_name =
+// const number = 100;
+// const convertedToString = number.toString();
+// const convertedToString2 = number + "";
 
-// const years = 30 - 5;
+// null.toString(); // error
+// undefined.toString(); // error
 
-// console.log(Infinity);
+// console.log(convertedToString2);
+// console.log(typeof convertedToString2);
+// console.log(typeof convertedToString);
+// console.log(String(100));
 
-// console.log(BigInt(42) + 2n);
+// const unknown = undefined;
+// const unknown2 = null;
+// const unknown3 = false;
+// const unknown4 = 0;
+// const unknown5 = NaN;
+// const unknown6 = "";
 
-// const name = "Анна";
+// const unknown7 = "1";
+// const unknown8 = {};
+// const unknown9 = [];
 
-// console.log("Привіт, " + name);
-// console.log(`Привіт, ${name}`);
+// const result = Boolean(unknown);
+// const result2 = Boolean(unknown2);
+// const result3 = Boolean(unknown3);
+// const result4 = Boolean(unknown4);
+// const result5 = Boolean(unknown5);
+// const result6 = Boolean(unknown6);
+// const result7 = Boolean(unknown7);
+// const result8 = Boolean(unknown8);
+// const result9 = Boolean(unknown9);
 
-// console.log(true);
-// console.log(false);
+// console.log(result);
+// console.log(result2);
+// console.log(result3);
+// console.log(result4);
+// console.log(result5);
+// console.log(result6);
+// console.log(result7);
+// console.log(result8);
+// console.log(result9);
+// console.log(!!unknown9.length);
+// console.log(!!Object.keys(unknown8).length);
 
-// const user = {
-//   name: "Анна",
-//   age: 20,
-//   isActive: true,
-//   hasPets: false,
-//   address: {
-//     city: "Kyiv",
-//     zip: 12345,
-//   },
-// };
+// const number = "42";
+// const bool = true;
+// console.log(BigInt(bool));
 
-// let user = null;
+// console.log(1 + 1 + "1");
 
-// logic ...
+// const valueFromAPI = "Юлія";
+// const valueFromAPI = "Юлія";
+// const number = 0;
 
-// user = {};
-// console.log(user);
+// const name = valueFromAPI || false || "Unknown";
+// const name2 = valueFromAPI && false && "Unknown";
 
-// if (typeof user === "object" && user !== null) {
+// const name3 = valueFromAPI ?? "Unknown";
+// const isValidValue = false ?? 42;
+
+// const html = '<h1>Hello</h1>'
+
+// const result = false || true;
+// const result2 = true || false;
+
+// valueFromAPI && html;
+
+// console.log(isValidValue);
+
+// MATH
+
+// console.log(Math.trunc(Math.random() * 100));
+// console.log(Math.floor(2.2));
+// console.log(Math.floor(2.8));
+// console.log(Math.ceil(2.8));
+// console.log(Math.ceil(2.8));
+// console.log(Math.round(2.2));
+// console.log(Math.round(2.8));
+// console.log(Math.round(2.5));
+
+// const number = 42.12345;
+
+// console.log(number.toFixed(2));
+
+// const text2 = "SOme \\ text";
+
+// console.log("text".length);
+// console.log("".length);
+// console.log(text2);
+// console.log(text2[0]);
+// console.log(text2.charAt(0));
+// console.log(text2[text2.length - 1]);
+// console.log(text2.charAt(0));
+
+// console.log(text2.toUpperCase());
+// console.log(text2.toLowerCase());
+
+const text3 = "Вийду на берег Дунаю";
+
+// console.log(text3.indexOf("берег", 10));
+// console.log(text3.includes("берег"));
+
+// console.log(text3.slice(0, 3));
+// console.log(text3.substring(5, 3));
+// console.log(text3.substring(5, 3));
+// console.log(text3.substr(0, 5));
+
+// console.log(text3.trim());
+
+// LOOP
+
+let i = 0;
+// let j = 0;
+
+// while (i < 0) {
+//   console.log("i:", i);
+//   // i = i + 1
+//   // i += 1;
+
+//   i++;
 // }
 
-// const number = 11;
+// do {
+//   console.log("j: ", j);
+//   j++;
+// } while (j < 1);
 
-// console.log(number % 2);
+// for (let i = 0; i < text3.length; i++) {
+//   console.log(text3[i]);
+// }
 
-// console.log(typeof null);
+// let sum = 0;
 
-// console.log(10 <= 10);
-// console.log(5 >= 10);
-// console.log(15 >= 10);
+// while (true) {
+//   const value = +prompt("Введіть значення", "");
 
-// const isAdmin = true;
-// const hasPets = false;
-// const age = 17;
+//   if (!value) {
+//     break;
+//   }
 
-// console.log(isAdmin || hasPets || age >= 18);
+//   // sum = sum + value
+//   sum += value;
+// }
 
-// console.log(!!"q");
+// console.log("SUM: ", sum);
 
-// let user1 = "Анна";
-// const user2 = user1;
-// user = "Анна";
+// for (let i = 0; i < 10; i++) {
+//   if (i % 2 !== 0) {
+//     continue;
+//   }
 
-// user1 = "Юлія";
-// console.log(user1);
-// console.log(user2);
+//   console.log(i);
+// }
 
-// adiu3y4h23xb6g2x63g2xdg22
+// const year = +prompt("Коли було реліз ES6?", "");
+
+// if (year > 2015) {
+//   console.log("Запізно");
+// } else if (year < 2015) {
+//   console.log("Зарано");
+// } else {
+//   console.log("Точно!");
+// }
+
+// if () {
+
+// }
+
+// if () {
+
+// }
+
+// if () {
+
+// } else if {
+
+// }
+// if () {
+
+// } else {
+
+// }
+// console.log(year);
+// const age = 20;
+// age >= 18 ? console.log("Більше") : console.log("менше");
+// const isAllowed = age >= 18;
+// console.log(isAllowed);
+
+// const sum = 15;
+
+// if (sum === 10) {
+// } else if (sum === 5) {
+// }
+
 // const user = {
-//   name: "Анна",
+//   id: 1,
+//   name: "John",
+//   role: "admin",
 // };
 
-// // iu3axdsdasdg2xdg22
-// const user3 = {
-//   name: "Анна",
-// };
+// const USER_ADMIN = "admin";
+// const USER_MODERATOR = "moder";
+// const USER_SUPERADMIN = "superadmin";
+// const USER_CUSTOMER = "customer";
 
-// console.log(user === user3);
+// switch (user.role) {
+//   case USER_ADMIN:
+//     console.log("сума дорівню 5");
+//     break;
+//   case USER_MODERATOR:
+//   case USER_SUPERADMIN:
+//     console.log("сума дорівню 10 або 15");
+//     break;
+//   case USER_CUSTOMER:
+//     console.log("сума 20");
+//     break;
+//   default:
+//     console.log("невідомо");
+// }
 
-// const user2 = user; // user = adiu3y4h23xb6g2x63g2xdg22
+// if (username === 'Юлія' && age >= 18) {
 
-// user2.name = "Юлія";
+// } else if (username === 'Дмитро' && isAdmin) {
 
-// console.log(user === user2);
-// console.log(user2);
-
-// console.log("---> ", user1, user2);
-// console.log(user2);
-
-// let message = 1;
-// let message = 2;
-
-// var message = 1;
-// var message = 2;
-
-// console.log(message); // undefined
-// console.log(message2); // Error
-// let message2 = 5;
-// var message = 10;
-// console.log(message); // 10
-// console.log(message2); // 5
-
-console.log(typeof "1");
+// }
