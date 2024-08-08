@@ -1,246 +1,237 @@
 "use strict";
 
-// const stack = ["HTML", "CSS", "JavaScript", "Vue"];
+// 1
+// const array = [!!0, !!null, !!undefined]; // [false, false, false];
 
-// stack[1] = "SCSS";
-// stack[3] = "React";
+// const result1 = array.includes(true); // false
+// const result2 = array.includes(false); // true
+// console.log(result1); // ...
+// console.log(result2); // ...
 
-// console.log(stack);
+// const array2 = [!!"", !![], !!false];
 
-// const data = ["JS", 42, true, {}];
+// const result3 = array2.includes(true);
+// const result4 = array2.includes(false);
+// console.log(result3); // false || true
+// console.log(result4); // true || false
 
-// console.log(data.length);
+// const array3 = [
+//   55,
+//   5,
+//   "text",
+//   true,
+//   { a: "1", b: 2, c: 3, d: "e", f: "1" },
+//   [1, 2, 3, 4, 5],
+// ];
 
-// const lastElement = stack[stack.length - 1];
-// console.log(stack.at(-1));
-// console.log(lastElement);
+// const result5 = array3.some((item) => {
+//   if (item.length > 4) {
+//     console.log(item); //
+//     return item;
+//   }
 
-// console.log(typeof stack);
-
-// console.log(Array.isArray("stack"));
-
-// if (typeof stack === "object" && Array.isArray(stack)) {
-//   console.log(stack);
-// }
-
-// console.log(Array.isArray("Hello"));
-
-// if (Array.isArray("Hello")) {
-//   console.log(stack);
-// }
-
-// const result1 = stack.push("React");
-// const result2 = stack.unshift("HTTP");
-// const result3 = stack.pop();
-// const result4 = stack.shift();
-
-// console.log(stack);
-// console.log(result1);
-// console.log(result2);
-// console.log(result3);
-// console.log(result4);
-
-// for (let i = 0; i < stack.length; i++) {
-//   console.log(stack[i]);
-// }
-
-// const stack = ["HTML", "CSS", "JavaScript", "Vue"];
-
-// const result = stack.forEach((element, index) => {
-//   console.log(`${index} ---> ${element}`);
+//   // return item.length > 4
 // });
 
-// console.log(result);
+// console.log(result5); // ... true[], true obj||[], false
 
-// console.log(stack);
-// const result = stack.splice(10, 2, "React", "Angular");
-// console.log(stack);
-// console.log(result);
+// const array4 = [1, false, 0, null, { name: "Alina" }, [1, 2, 3, 4, 5]];
 
-// stack[10] = "React";
-// stack.forEach((element, index) => {
-//   console.log(element, index);
+// const result6 = array4.find((item) => {
+//   if (typeof item === "object") {
+//     console.log("item: ", item);
+//     return true;
+//   }
 // });
-// console.log(stack);
 
-// const newStack = stack.slice();
-// const newStack2 = stack.slice(1);
-// const newStack3 = stack.slice(1, 3);
+// console.log(result6); // ...
 
-// console.log(stack);
-// console.log(newStack);
+// const array5 = [1, false, 0, null, { name: "Alina" }, [1, 2, 3, 4, 5]];
 
-// const stack = ["HTML", "CSS", "JavaScript", "Vue"];
-// const stack2 = ["Java", "Python"];
-// let stack3 = [];
+// const result8 = array5.filter((item) => item);
 
-// // stack = [] = dasd23er23fd2f2f2f
-// if (Array.isArray(stack) && Array.isArray(stack2)) {
-//   // asda32r323f2
-//   stack3 = stack2.concat(stack, stack2);
-// }
+// console.log(result8); // ... [1, {}, []], []
 
-// console.log(stack3);
-// const user1 = {
-//   name: "Андрій",
-//   age: 20,
+// OBJECT
+
+// const user = {
+//   name: "John",
+//   age: 42,
+//   hasPets: true,
 // };
+
+// user.isAdmin = true;
+// user.age = 43;
+
+// delete user.name;
+
+// console.log(user);
+// console.log(user["has pets"]);
+
+// if ("age" in user) {
+//   console.log(user);
+// }
+
+// console.log(user.isAdmin);
+
+// for (let key in user) {
+//   console.log(key);
+//   console.log(user[key]);
+// }
+
+// console.log(user.address?.street ?? "невідомо");
 
 // const user2 = {
-//   name: "Анна",
-//   age: 22,
+//   name: "John",
+//   age: 42,
+//   hasPets: true,
 // };
 
-// const user3 = {
-//   name: "Юлія",
-//   age: 23,
-// };
+// const keys = Object.keys(user2);
+// const values = Object.values(user2);
+// console.log(keys);
+// console.log(values);
 
-// const users = [user3, user2, user1];
-// console.log(users);
-// const numbers = [1, 2, 25, 15];
+// const entries = Object.entries(user2);
+// // console.log(entries);
 
-// users.sort(function (userA, userB) {
-//   if (userA.age > userB.age) {
-//     return 1;
-//   }
+// const user3 = [
+//   ["name", "John"],
+//   ["age", 42],
+//   ["hasPets", true],
+// ];
 
-//   if (userA.age < userB.age) {
-//     return -1;
-//   }
+// const fromEntries = Object.fromEntries(entries);
+// const fromEntries2 = Object.fromEntries(user3);
+// console.log(fromEntries);
+// console.log(fromEntries2);
 
-//   return 0;
-// });
-// numbers.sort(function (a, b) {
-//   if (a > b) {
-//     return 1;
-//   }
-
-//   if (a < b) {
-//     return -1;
-//   }
-
-//   return 0;
-// });
-
-// console.log(numbers);
-
-// const numbers2 = [1, 2, 25, 15];
-
-// numbers2.sort(function (a, b) {
-//   return a - b;
-// });
-
-// numbers2.sort(() => a - b);
-
-// console.log(numbers2);
-
-// function sortByName() {
-
+// for (let value of Object.values(user2)) {
+//   console.log(value);
 // }
 
-// const stack = ["html", "css", "js"];
+// for (let key of Object.keys(user2)) {
+//   console.log(key);
+// }
 
-// const result = stack.map((element, index) => {
-//   if (element.length > 3) {
-//     return `${element} - ${index}`;
-//   }
-//   return element;
-// });
+// for (let entry of Object.entries(user2)) {
+//   console.log(entry);
+// }
 
-// console.log(stack);
-// console.log(result);
+// SYMBOL
 
-// const numbers = [1, 2, 3, 4];
+// const id = Symbol("asdasdas");
+// const id2 = Symbol("id");
 
-// numbers.reverse();
-
-// console.log(numbers);
-
-// const str = "hello-world!";
-
-// const words = str.split(" ");
-// const words2 = str.split("w");
-
-// const str2 = words2.join(" --- ");
-
-// console.log(str2);
-// console.log(words2);
-
-// const numbers = [1, 2, 3, 4, 5];
-
-// console.log(numbers.indexOf(1));
-// console.log(numbers.includes(6));
-
-// const user1 = {
-//   name: "Андрій",
-//   age: 20,
-// };
+// const id3 = Symbol.for("id");
+// const id4 = Symbol.for("id");
 
 // const user2 = {
-//   name: "Анна",
-//   age: 22,
+//   [id]: 42,
+//   name: "John",
+//   age: 42,
+//   hasPets: true,
 // };
 
-// const user3 = {
-//   name: "Юлія",
-//   age: 23,
+// console.log(id3 === id4);
+// console.log(id.description);
+// console.log(user2);
+// console.log(Object.keys(user2));
+
+// const obj = {
+//   true: 123,
+//   1: 543,
 // };
 
-// const users = [user3, user2, user1];
-// console.log("all users: ", users);
-// // const user = users.find((element, index) => {
-// //   return element.age > 20;
-// // });
+// console.log(obj.true);
 
-// const filteredUsers = users.filter((element, index) => {
-//   console.log(index, element);
-//   return element.age > 20;
-// });
+// CLONE
+
+// const user = {
+//   name: "John",
+//   age: 42,
+//   hasPets: true,
+//   address: {
+//     street: "Наукова 11",
+//   },
+// };
+
+// const user2 = {};
+
+// for (let key in user) {
+//   user2[key] = user[key];
+// }
+
+// user2.age = 20;
 
 // console.log("user: ", user);
-// console.log("filteredUsers: ", filteredUsers);
+// console.log("user2: ", user2);
 
-// const numbers = [1, 2, 3, [4, 5, 6, [7, 8, 9]]];
-// console.log(numbers);
-// console.log(numbers.flat(Infinity));
+// const user3 = Object.assign({}, user);
+// user3.age = 30;
+// user3.address.street = "Стрийська 22";
+// console.log("user3: ", user3);
 
-// const numbers = [1, 2, 3, 4, 5, 6];
+// Object.freeze(user);
+// user.age = 22;
+// console.log(user.age);
 
-// const result1 = numbers.every((number) => {
-//   if (number >= 1) {
-//     return true;
+// const dateNow1 = new Date();
+// const dateNow2 = new Date(2024, 0, 1, 0, 0, 0, 0);
+
+// console.log(window);
+
+// function getUserTimeByTimezone(timeZone) {
+//   const dateNow = new Date();
+
+//   if (timeZone) {
+//     return dateNow.toLocaleString("en", {
+//       timeZone: timeZone,
+//     });
 //   }
+
+//   return dateNow.toLocaleString("en", {
+//     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+//   });
+// }
+
+// const currentDate = dateNow1.toLocaleString("en", {
+//   timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 // });
 
-// const result2 = numbers.some((number) => {
-//   if (number >= 7) {
-//     return true;
-//   }
-// });
+// console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
+// console.log(dateNow1 > dateNow2);
+// console.log(dateNow1.getFullYear());
+// console.log(dateNow1.getDay());
+// console.log(dateNow1.getHours());
+// console.log(dateNow1.toLocaleString());
+// console.log(Date.now());
 
-// console.log(result1);
-// console.log(result2);
+// const dateDiff = Date.now() - Date.parse(dateNow2);
+// console.log(Math.floor(dateDiff / 3600000));
 
-const numbers = [1, 2, 3, 4, 5, 6];
-const initialValue = 10;
+// console.log(new Date());
 
-const sum = numbers.reduce(function (acc, currentValue) {
-  console.log("currentValue: ", currentValue);
-  // 1 ітерація
-  //  acc = initialValue || numbers[0]
-  // currentValue = 1
-  // return 11
+// console.log(new Date("08-08-sdfsd"));
+// const date = "";
+// if (date !== "Invalid Date") {
+// }
 
-  // 2 ітерація
-  // acc = 12
-  // 11 + 2
-  // return 15
+function durationBetweenDates(start, end, type) {}
 
-  // 3 ітерація
-  // acc = 15
-  // 13 + 3
-  return acc + currentValue;
-}, initialValue);
+durationBetweenDates("02 Aug 1985", "03 Aug 1985", "hours");
+durationBetweenDates("12 Aug 1985", "03 Aug 1985", "seconds");
+durationBetweenDates("02 Aug 1985", "03 Aug 1985", "days");
+durationBetweenDates("22 Aug 1985", "03 Aug 1985", "minutes");
 
-console.log("sum: ", sum);
+const priceData = {
+  Apples: "23.4",
+  BANANAS: "48",
+  oRAngGEs: "48.7584",
+};
+
+const priceDataResult = {
+  apples: "23.40",
+  bana: "48.00",
+  oranges: "48.75",
+};
