@@ -1,118 +1,117 @@
 "use strict";
 
-// const x = 10;
-// const y = x++;
-// console.log(x, y);
+// let timerId = setTimeout(sayHi, 2000);
 
-// const arr = [1, 2, 3];
-// arr[10] = 99;
-// console.log(arr);
-// console.log(arr.length);
+// function sayHi() {
+//     console.log('Hi!')
+//     alert('Hi!')
 
-// const obj = { a: 1, b: 2 };
-// const newObj = { ...obj, b: 3 };
-// console.log(newObj.b);
-
-// const a = null;
-// const b = undefined;
-// console.log(a == b, a === b);
-
-// const x = [1, 2, 3];
-// const y = x.map(num => num * 2).filter(num => num > 4);
-// console.log(y);
-
-// const a = [1, 2];
-// const b = [1, 2];
-// console.log(a == b, a === b);
-
-// let count = 0;
-// const increment = () => count++;
-// increment();
-// increment();
-// console.log(count);
-
-// const set = new Set([1, 2, 2, 3, 4]);
-// console.log(set.size);
-
-// const obj = { name: "Alice" };
-// const copy = Object.assign({}, obj);
-// obj.name = "Bob";
-// console.log(copy.name);
-
-// const d = 2
-// function test(a, b) {
-//     const c = '1'
-
-//     function test2() { }
+//     timerId = setTimeout(sayHi, 2000)
 // }
-// test
-// console.log(c)
 
-// const a = 'global';
+// const timerId = setTimeout(sayHi, 2000);
+// console.log(timerId);
+// clearTimeout(timerId);
 
-// function outer() {
-//     const b = 'outer';
+// const timerId = setInterval(sayHi, 2000);
+// clearInterval(timerId)
 
-//     function inner() {
-//         const c = 'inner';
+// const timerId = setInterval(sayHi, 2000);
 
-//         console.log(c)
-//         console.log(b)
-//         console.log(a)
+
+// function deposit(amount) {
+//     this.balance += amount // bankAccount.balance = bankAccount.balance + amount
+//     return `Deposited $${amount}. New balance: $${this.balance}`
+// }
+
+// const bankAccount = {
+//     accountNumber: 12345678,
+//     balance: 1000,
+//     deposit, // deposit: deposit
+//     map: function () {
+
 //     }
-
-//     console.log(a)
-//     console.log(b)
-
-//     inner();
-
+// deposit(amount) {
+//     this.balance += amount // bankAccount.balance = bankAccount.balance + amount
+//     return `Deposited $${amount}. New balance: $${this.balance}`
+// }
 // }
 
-// outer();
-// console.log(a)
+// const wallet = {
+//     ownerName: "Alice",
+//     balance: 250,
+//     currency: "USD",
+//     addMoney: deposit
+// }
 
-// global, outer, inner, outer, global, global
+// console.log(bankAccount.deposit(300));
+// console.log(wallet.addMoney(300));
 
-// const name = 'Solimia';
-
-// function getPersonName() {
-//     const name = 'Alyona';
-
-//     return function displayName() {
-//         console.log(name)
+// const spendMoney = (amount) => {
+//     // console.log('amount > this.balance: ', this.balance)
+//     if (amount > this.balance) {
+//         return `Not enough funds! Current balance: $${this.balance}`
+//     } else {
+//         this.balance -= amount; // this.balance = this.balance - amount
+//         return `Spend $${amount}. New balance: $${this.balance}`
 //     }
 // }
 
-// const person = getPersonName();
-// person()
-// let counter = 0
-
-// function increaseCount() {
-//     return counter++
-// }
-// console.log(increaseCount())
-// console.log(increaseCount())
-// console.log(increaseCount())
-
-// function getCounter() {
-//     let counter = 0
-
-//     return function () {
-//         return counter++
-//     }
+// const digitalWallet = {
+//     owner: "Bob",
+//     balance: 1000,
+//     spend: spendMoney,
+//     // spendMoney // spendMoney: spendMoney
 // }
 
-// const count = getCounter();
-// const count2 = getCounter();
+// console.log(digitalWallet.spendMoney(1300))
+// console.log(this)
 
-// console.log(count())
-// console.log(count())
-// console.log(count())
-// console.log(count2())
+const shoppingCart = {
+    items: [],
 
-function getUser() { }
+    // addItem(item) {
+    //     this.items.push(item);
+    //     return `Added ${item} to the cart.`
+    // },
 
-const aUser = 'user1'
-var bUser = 'user'
+    addItem: function (item) {
+        this.items.push(item);
+        return `Added ${item} to the cart.`
+    },
 
-console.log(window)
+
+
+    // addMiltypleItems(itemsToAdd) {
+    //     itemsToAdd.forEach((item) => { // this = shoppingCart
+    //         this.addItem(item)
+    //     });
+
+    //     // itemsToAdd.forEach(function(item) { // error, this = undefined
+    //     //     this.addItem(item)
+    //     // });
+
+    //     return `Added ${itemsToAdd.length} items to the cart.`
+    // },
+
+    addMultipleItems2(itemsToAdd) {
+        const addItem = this.addItem.bind(this)
+
+        // itemsToAdd.forEach((item) => { // this = shoppingCart
+        //     this.addItem(item)
+        // });
+
+        itemsToAdd.forEach(function (item) { // error, this = undefined
+
+            addItem(item)
+        });
+
+        return `Added ${itemsToAdd.length} items to the cart.`
+    }
+
+}
+
+// shoppingCart.addItem('iphone15')
+// shoppingCart.addItem('iphone14')
+shoppingCart.addMultipleItems2(['macbook air', 'macbook pro'])
+console.log('cart: ', shoppingCart.items)
