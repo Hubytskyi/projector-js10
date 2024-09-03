@@ -1,64 +1,110 @@
 "use strict";
 
-// const username = prompt("Введіть своє ім'я")
-// console.log(username)
+// const title = document.querySelector('#main-title');
+// const img = document.querySelector('img');
+// title.setAttribute('title', 'Основи роботи з DOM')
+// title.removeAttribute('title')
+// console.log(title.innerHTML)
+// console.log(title.dataset.userRole)
 
-// const username = 'jane';
+// const button = document.querySelector('button');
+// const buttonWrapper = document.querySelector('.button-wrapper');
 
-// const user = {
-//   name: "Jane",
-//   role: "admin",
-//   token: "ad32d7t327dtg37gfy43gf834gf83gf83gfy3"
+// button.addEventListener('click', (event) => {
+//     // event.stopPropagation();
+
+//     console.log('click')
+// });
+
+// buttonWrapper.addEventListener('click', () => {
+//     console.log('button wrapper click')
+// });
+
+// document.body.addEventListener('click', () => {
+//     console.log('body click')
+// });
+
+// console.log(button)
+
+// const input = document.querySelector('input')
+// console.log(input)
+
+// input.addEventListener('change', (event) => {
+//     console.log('--> input change: ', event.target.value)
+// });
+
+// input.addEventListener('input', (event) => {
+//     console.log('--> input input: ', event.target.value)
+// });
+
+// title.addEventListener('mouseenter', (event) => {
+//     event.target.classList.toggle('accent')
+// })
+
+// title.addEventListener('mouseleave', (event) => {
+//     event.target.classList.toggle('accent')
+// })
+
+// input.addEventListener('keyup', (event) => {
+//     console.log('--> input keyup: ', event.target.value)
+// });
+
+// input.addEventListener('keydown', (event) => {
+//     console.log('--> input keydown: ', event.target.value)
+// });
+
+// input.addEventListener('keypress', (event) => {
+//     console.log('--> input keypress: ', event.target.value)
+// });
+
+// const form = document.querySelector('form')
+
+// form.addEventListener('submit', (event) => {
+//     event.preventDefault();
+
+//     const { start, end } = event.target
+
+//     console.log('--> input keypress: ', start.value, end.value)
+// });
+
+// const start = document.querySelector('#start')
+// const end = document.querySelector('#end')
+// const button = document.querySelector('button')
+
+// let startValue = null;
+// let endValue = null;
+
+// start.addEventListener('change', (event) => {
+//     startValue = event.target.value
+//     console.log(event.target.value)
+// })
+
+// end.addEventListener('change', (event) => {
+//     endValue = event.target.value
+//     console.log(event.target.value)
+// })
+
+// button.addEventListener('click', calculation)
+
+// function calculation() {
+//     console.log(new Date(startValue) - new Date(endValue))
 // }
-// // console.log(user)
-// localStorage.setItem('user', JSON.stringify(user))
 
-// const userFromStorage = localStorage.getItem('user');
-// const parseduser = JSON.parse(userFromStorage)
-// console.log(parseduser)
+// const one = document.querySelector('#one')
+// const two = document.querySelector('#two')
 
-// console.log(document)
+// one.addEventListener('focus', () => {
+//     console.log('focus')
+// })
 
-// const mainTitle = document.getElementById('main-title')
-// console.log(mainTitle)
+// one.addEventListener('blur', () => {
+//     console.log('blur')
+// })
 
-// const listItems = document.getElementsByTagName('li')
-// console.log(listItems)
-// const listItems2 = document.getElementsByClassName('item')
-// console.log(listItems2)
+// window.addEventListener('scroll', (event) => {
+//     console.log(document.documentElement.scrollTop)
+// })
 
-// const title = document.querySelector('#main-title')
-// const title2 = document.querySelector('.title')
-// console.log(title)
-// console.log(title2)
-
-// const items = document.querySelectorAll('.item')
-// console.log(items)
-
-// const sectionOne = document.querySelector('.section-one')
-// const block = document.querySelector('#block');
-// const title = document.querySelector('.title');
-
-
-// console.log(sectionOne.contains(title))
-
-// console.log(block.previousElementSibling)
-
-// const sectionOne = document.querySelector('.section-one')
-// console.log(sectionOne)
-// const section = document.createElement('section')
-// sectionOne.prepend(section)
-// console.log(section)
-
-const title = document.querySelector('#main-title');
-// title.className = 'second-title'
-// console.log(title.className)
-// title.classList.add('highlight')
-// title.classList.remove('title')
-// title.classList.toggle('highlight-2')
-
-// console.log(title.classList.contains('titleeee'))
-// title.classList.add('accent')
-// title.style.paddingTop = '20px'
-// title.style = 'padding-top: 42px; color: green'
-console.log({ title })
+// window.addEventListener('resize', (event) => {
+//     console.log(event)
+// })

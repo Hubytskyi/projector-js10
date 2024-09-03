@@ -7,12 +7,13 @@
 body {
   background-color: #3548fe;
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   color: #ffffff;
+  overflow-y: scroll;
 }
 
 h1 {
@@ -22,4 +23,8 @@ h1 {
 
 .accent {
   color: red;
+}
+
+div {
+  height: 1000vh;
 }
