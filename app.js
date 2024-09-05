@@ -1,110 +1,149 @@
 "use strict";
 
-// const title = document.querySelector('#main-title');
-// const img = document.querySelector('img');
-// title.setAttribute('title', 'Основи роботи з DOM')
-// title.removeAttribute('title')
-// console.log(title.innerHTML)
-// console.log(title.dataset.userRole)
+// 1. Додати нові задачі +
+// 2. Видаляти всі задачі +
+// 3. Видаляти окремі задачі +
+// 4. Пошук/фільтрація +
+// 5. Зберігати в стореджі +
 
-// const button = document.querySelector('button');
-// const buttonWrapper = document.querySelector('.button-wrapper');
+// Отримуємо необхідні DOM елементи
+const form = document.querySelector('.create-task-form'); // Форма для створення задач
+const taskInput = document.querySelector('.task-input'); // Поле для введення задачі
+const collection = document.querySelector('.collection'); // Список задач
+const clearButton = document.querySelector('.clear-tasks'); // Кнопка для видалення всіх задач
+const filterInput = document.querySelector('.filter-input'); // Поле для фільтрації задач
 
-// button.addEventListener('click', (event) => {
-//     // event.stopPropagation();
+// Ключ для збереження задач в LocalStorage
+const TASKS_STORAGE_KEY = 'tasks';
 
-//     console.log('click')
-// });
+// Додаємо обробники подій
+document.addEventListener('DOMContentLoaded', renderTasks); // При завантаженні сторінки відображаємо задачі з LocalStorage
+form.addEventListener('submit', addTask); // Додаємо задачу при сабміті форми
+clearButton.addEventListener('click', removeTasks); // Видаляємо всі задачі при натисканні на кнопку
+collection.addEventListener('click', removeTask); // Видаляємо окрему задачу при натисканні на кнопку "x"
+filterInput.addEventListener('input', filterTasks); // Фільтруємо задачі при введенні тексту у поле
 
-// buttonWrapper.addEventListener('click', () => {
-//     console.log('button wrapper click')
-// });
+// Відображення задач з LocalStorage
+function renderTasks() {
+    if (getTasksFromLocalStorage()) {
+        const tasks = JSON.parse(getTasksFromLocalStorage());
 
-// document.body.addEventListener('click', () => {
-//     console.log('body click')
-// });
+        // Створюємо елемент для кожної задачі
+        tasks.forEach((task, index) => {
+            createTask(task, index);
+        });
+    }
+}
 
-// console.log(button)
+// Отримуємо індекс останньої задачі для присвоєння новим задачам
+function getLastTasksIndex() {
+    if (getTasksFromLocalStorage()) {
+        return JSON.parse(getTasksFromLocalStorage()).length;
+    }
 
-// const input = document.querySelector('input')
-// console.log(input)
+    return 0;
+}
 
-// input.addEventListener('change', (event) => {
-//     console.log('--> input change: ', event.target.value)
-// });
+// Створення HTML-елементу для задачі
+function createTask(task, index) {
+    const li = document.createElement('li');
+    li.innerHTML = task;
+    li.classList.add('task');
+    li.setAttribute('data-id', index); // Присвоюємо задачі унікальний індекс
 
-// input.addEventListener('input', (event) => {
-//     console.log('--> input input: ', event.target.value)
-// });
+    // Додаємо кнопку для видалення задачі
+    const button = document.createElement('button');
+    button.innerHTML = 'x';
+    button.className = 'button-icon button-delete';
 
-// title.addEventListener('mouseenter', (event) => {
-//     event.target.classList.toggle('accent')
-// })
+    li.append(button);
 
-// title.addEventListener('mouseleave', (event) => {
-//     event.target.classList.toggle('accent')
-// })
+    // Додаємо задачу до колекції (списку)
+    collection.append(li);
+}
 
-// input.addEventListener('keyup', (event) => {
-//     console.log('--> input keyup: ', event.target.value)
-// });
+// Додавання нової задачі
+function addTask(event) {
+    event.preventDefault(); // Відміняємо перезавантаження сторінки при сабміті
 
-// input.addEventListener('keydown', (event) => {
-//     console.log('--> input keydown: ', event.target.value)
-// });
+    const currentForm = event.target;
+    const inputValue = currentForm.task.value; // Отримуємо значення з поля вводу
 
-// input.addEventListener('keypress', (event) => {
-//     console.log('--> input keypress: ', event.target.value)
-// });
+    if (!inputValue) {
+        return; // Якщо поле порожнє, не додаємо задачу
+    }
 
-// const form = document.querySelector('form')
+    const currentIndex = getLastTasksIndex(); // Отримуємо індекс для нової задачі
 
-// form.addEventListener('submit', (event) => {
-//     event.preventDefault();
+    createTask(inputValue, currentIndex); // Створюємо нову задачу
+    setTaskToLocalStorage(inputValue); // Зберігаємо задачу в LocalStorage
 
-//     const { start, end } = event.target
+    currentForm.reset(); // Очищаємо поле вводу
+}
 
-//     console.log('--> input keypress: ', start.value, end.value)
-// });
+// Зберігаємо задачу в LocalStorage
+function setTaskToLocalStorage(task) {
+    let tasks = [];
 
-// const start = document.querySelector('#start')
-// const end = document.querySelector('#end')
-// const button = document.querySelector('button')
+    if (getTasksFromLocalStorage()) {
+        tasks = JSON.parse(getTasksFromLocalStorage()); // Отримуємо існуючі задачі
+    }
 
-// let startValue = null;
-// let endValue = null;
+    tasks.push(task); // Додаємо нову задачу
+    setTasksToLocalStorage(tasks); // Оновлюємо LocalStorage
+}
 
-// start.addEventListener('change', (event) => {
-//     startValue = event.target.value
-//     console.log(event.target.value)
-// })
+// Оновлюємо LocalStorage
+function setTasksToLocalStorage(tasks) {
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks)); // Зберігаємо задачі у форматі JSON
+}
 
-// end.addEventListener('change', (event) => {
-//     endValue = event.target.value
-//     console.log(event.target.value)
-// })
+// Отримуємо задачі з LocalStorage
+function getTasksFromLocalStorage() {
+    return localStorage.getItem(TASKS_STORAGE_KEY); // Повертаємо задачі у вигляді рядка
+}
 
-// button.addEventListener('click', calculation)
+// Очищаємо LocalStorage
+function clearTasksFromLocalStorage() {
+    localStorage.removeItem(TASKS_STORAGE_KEY); // Видаляємо всі задачі з LocalStorage
+}
 
-// function calculation() {
-//     console.log(new Date(startValue) - new Date(endValue))
-// }
+// Видалення всіх задач
+function removeTasks() {
+    collection.innerHTML = ''; // Очищаємо HTML-код списку задач
 
-// const one = document.querySelector('#one')
-// const two = document.querySelector('#two')
+    clearTasksFromLocalStorage(); // Очищаємо LocalStorage
+}
 
-// one.addEventListener('focus', () => {
-//     console.log('focus')
-// })
+// Видалення окремої задачі
+function removeTask(event) {
+    if (event.target.classList.contains('button-delete')) {
+        const li = event.target.closest('.task'); // Знаходимо батьківський елемент (задачу)
+        const tasks = JSON.parse(getTasksFromLocalStorage()); // Отримуємо задачі з LocalStorage
 
-// one.addEventListener('blur', () => {
-//     console.log('blur')
-// })
+        // Фільтруємо задачі, залишаючи лише ті, які не мають індексу видаленої задачі
+        const filteredTasks = tasks.filter((_, index) => {
+            return index.toString() !== li.getAttribute('data-id');
+        });
 
-// window.addEventListener('scroll', (event) => {
-//     console.log(document.documentElement.scrollTop)
-// })
+        removeTasks(); // Видаляємо всі задачі з інтерфейсу
+        setTasksToLocalStorage(filteredTasks); // Зберігаємо оновлений список задач
+        renderTasks(); // Відображаємо задачі після видалення
+    }
+}
 
-// window.addEventListener('resize', (event) => {
-//     console.log(event)
-// })
+// Фільтрація задач
+function filterTasks(event) {
+    const filterQuery = event.target.value; // Отримуємо значення з поля фільтрації
+
+    const tasks = collection.querySelectorAll('.task'); // Отримуємо всі задачі
+
+    tasks.forEach((task) => {
+        const taskValue = task.firstChild.textContent; // Отримуємо текст задачі
+        if (!taskValue.includes(filterQuery.trim())) {
+            task.classList.add('hidden'); // Ховаємо задачі, які не відповідають запиту
+        } else {
+            task.classList.remove('hidden'); // Показуємо задачі, що відповідають запиту
+        }
+    });
+}
