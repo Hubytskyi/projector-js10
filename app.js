@@ -1,114 +1,132 @@
 "use strict";
 
-const form = document.querySelector('.book-form'); // Знаходимо форму додавання книги.
-const bookList = document.querySelector('.book-list'); // Знаходимо список книг, де будуть відображатися додані книги.
+// Task 1
+// console.log(a);  // ? 10, undefined
+// var a = 10;
 
-class Book {
-  constructor(title, author, isbn) {
-    this.title = title;
-    this.author = author;
-    this.isbn = isbn;
-  }
-}
-// Клас Book створює об'єкт книги з трьома властивостями: title (назва), author (автор), isbn (унікальний номер).
+// function test() {
+//   console.log(b);  // ? 20, undefined
+//   var b = 20;
 
-class UI {
-  constructor() {
-    this.bookList = document.querySelector('.book-list');
-  }
-  // Клас UI відповідає за взаємодію з інтерфейсом користувача, наприклад, за додавання або видалення книги зі списку.
+//   if (true) {
+//     var b = 30;
+//     console.log(b);  // ? 30
+//   }
 
-  renderBook({ title, author, isbn }) {
-    const tr = document.createElement('tr'); // Створюємо новий елемент <tr> для таблиці, щоб відобразити книгу.
+//   console.log(b);  // ? 30
+// }
 
-    tr.innerHTML = `
-      <td>${title}</td>
-      <td>${author}</td>
-      <td>${isbn}</td>
-      <td><button class="delete-button">x</button></td>
-    `;
-    // Додаємо вміст до рядка таблиці з назвою книги, автором, ISBN і кнопкою для видалення.
+// test();
 
-    this.bookList.appendChild(tr); // Додаємо новий рядок до списку книг у DOM.
-  }
 
-  deleteBook(tr) {
-    tr.remove(); // Видаляємо рядок книги зі списку.
-    ui.showAlert("Ви успішно видалили книгу!", "success"); // Показуємо повідомлення про успішне видалення книги.
-  }
+// Task 2
+// function makeCounter() {
+//   let count = 0;
 
-  resetForm() {
-    form.reset(); // Очищаємо всі поля форми після додавання книги.
-  }
+//   return function () {
+//     count += 1;
+//     return count;
+//   };
+// }
 
-  showAlert(message, className, isAutoHide = true) {
-    const div = document.createElement('div'); // Створюємо новий <div> для відображення повідомлення.
-    div.textContent = message; // Додаємо текст повідомлення.
-    div.classList.add(className); // Додаємо клас для стилізації повідомлення (наприклад, 'success' або 'error').
+// const counter1 = makeCounter();
+// const counter2 = makeCounter();
 
-    form.before(div); // Додаємо повідомлення перед формою.
+// console.log(counter1());  // ? 1
+// console.log(counter1());  // ? 2
+// console.log(counter2());  // ? 1
 
-    if (isAutoHide) {
-      setTimeout(() => {
-        div.remove(); // Якщо isAutoHide дорівнює true, повідомлення буде автоматично видалено через 3 секунди.
-      }, 3000);
-    }
-  }
+// const numbers = [1, 2, 3, 4, 5];
 
-  validateInput(input) {
-    if (input.value === '') {
-      input.classList.add('input-error'); // Якщо поле порожнє, додаємо клас для помилки.
-      return true; // Повертаємо true, якщо введення не валідне.
-    }
+// function numberMap(n) {
+//   if (n % 2 === 0) {
+//     return n * 2;
+//   }
 
-    input.classList.remove('input-error'); // Якщо поле заповнене, видаляємо клас помилки.
-    return false; // Повертаємо false, якщо введення валідне.
-  }
-}
+//   return n;
+// }
 
-const ui = new UI(); // Створюємо новий об'єкт UI для роботи з інтерфейсом.
+// const result = numbers.map(n => {
+//   if (n % 2 === 0) {
+//     return n * 2;
+//   }
 
-function handleSubmit(event) {
-  event.preventDefault(); // Зупиняємо стандартну поведінку форми (перезавантаження сторінки).
+//   return n;
+// });
 
-  const title = event.target.title; // Отримуємо значення поля 'title'.
-  const author = event.target.author; // Отримуємо значення поля 'author'.
-  const isbn = event.target.isbn; // Отримуємо значення поля 'isbn'.
+// console.log(result); // ? [1,4,3,8,5] +++
+// console.log(result); // ? [4, 8] +
+// console.log(result); // ? [empty, 4, empty,  8, empty] +
+// console.log(result); // ? [undefined, 4, undefined,  8, undefined] +
 
-  const inputs = [title, author, isbn].filter(ui.validateInput);
-  // Валідовуємо всі поля форми, якщо поле порожнє, воно буде додано до масиву.
+// "use strict";
+// console.log(this)
+// const person = {
+//   name: 'Alice',
+//   age: 25,
+//   greet() {
+//     // return this;
+//     // return `Hello, my name is ${this.name}`;
+//   }
+// };
 
-  const isErrorAlreadyExist = form.previousElementSibling.classList.contains('error');
-  // Перевіряємо, чи вже є повідомлення про помилку.
+// console.log(person.greet())
 
-  if (inputs.length) {
-    if (!isErrorAlreadyExist) {
-      ui.showAlert("Усі поля повинні містити значення", "error", false); // Виводимо повідомлення про помилку, якщо є порожні поля.
-    }
-  } else {
-    const titleValue = title.value.trim();
-    const authorValue = author.value.trim();
-    const isbnValue = isbn.value.trim();
-    // Обрізаємо зайві пробіли з полів введення.
+// const greetFn = person.greet;
+// const greetFn = person.greet.bind(person);
+// console.log(greetFn());  // ? 
 
-    const book = new Book(titleValue, authorValue, isbnValue); // Створюємо новий об'єкт книги.
+// `Hello, my name is undefined`
+// `Hello, my name is Alice`
+// function, obejct
 
-    if (form.previousElementSibling.classList.contains('error')) {
-      form.previousElementSibling.remove(); // Якщо є попередня помилка, видаляємо її.
-    }
+// const [first, , third] = [1, 2, 3, 4, 5];
 
-    ui.renderBook(book); // Додаємо книгу до списку.
-    ui.showAlert("Ви успішно додали книгу!", "success"); // Виводимо повідомлення про успішне додавання книги.
-    ui.resetForm(); // Очищаємо поля форми.
-  }
-}
+// console.log(first);  // ? 1
+// console.log(third);  // ? 3
 
-function handleDelete(event) {
-  if (event.target.classList.contains('delete-button')) {
-    const tr = event.target.closest('tr'); // Отримуємо батьківський <tr> для кнопки видалення.
-    ui.deleteBook(tr); // Видаляємо книгу зі списку.
-  }
-}
+// console.log('start')
+// setTimeout(() => {
+//   console.log('settimeout')
+// }, 3000)
+// console.log('end')
 
-form.addEventListener('submit', handleSubmit); // Додаємо обробник події для додавання книги.
-bookList.addEventListener('click', handleDelete); // Додаємо обробник події для видалення книги.
+// function first() {
+//   console.log('1')
+//   second()
+// }
+
+// function second() {
+//   console.log(2)
+// }
+
+// first();
+
+// []
+// [first]
+// [first, log('1')]
+// [first]
+// [first, second]
+// [first, second, log(2)]
+// [first, second]
+// [first]
+// []
+
+// function rec() {
+//   // повинен бути вихід з рекурсії
+//   rec();
+// }
+
+// rec()
+
+// []
+// [rec]
+// [rec, rec,]
+// [rec, rec, rec]
+// [rec, rec, rec, rec]
+
+// const button = document.querySelector('button')
+// button.addEventListener('click', handleClick)
+// function handleClick() {
+//   console.log('click')
+// }
