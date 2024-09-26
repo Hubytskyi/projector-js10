@@ -1,78 +1,153 @@
 "use strict";
 
-// const promise = new Promise(function (resolve, reject) {
-//     resolve(123)
-// });
+// function delay(ms) {
+//     return new Promise((resolve) => setTimeout(resolve, ms));
+// }
 
-// fetch('api url')
-//     .then
-// // console.log(promise)
+// function delay2(ms) {
+//     return new Promise((resolve, reject) => setTimeout(reject, ms));
+// }
 
-// promise.then((result) => {
-//     console.log(result)
-// })
+// Promise.all([delay(1000), delay2(2000), delay(3000)])
+//     .then(() => console.log('All delays are done!')) // Через 3 секунди
+//     .catch((error) => console.log(error))
 
-// fetch('https://jsonplaceholder.typicode.com/users')
-//     .then((response) => {
-//         return response.json()
+
+// function fetchUserData() {
+//     return fetch('https://jsonplaceholder.typicode.com/asddasd/1')
+//         .then((response) => {
+//             if (!response.ok) {
+//                 throw new Error("Can't fetch user")
+//             }
+
+//             return response.json()
+//         })
+// }
+
+// function fetchUserPosts() {
+//     return fetch('https://jsonplaceholder.typicode.com/sss?userId=1111')
+//         .then((response) => {
+//             if (!response.ok) {
+//                 throw new Error("Can't fetch posts")
+//             }
+
+//             return response.json()
+//         })
+// }
+
+// function fetchUserTodos() {
+//     return fetch('https://jsonplaceholder.typicode.com/toddesros?userId=1')
+//         .then((response) => {
+//             if (!response.ok) {
+//                 throw new Error("Can't fetch todos")
+//             }
+
+//             return response.json()
+//         })
+// }
+
+// Promise.all([fetchUserData(), fetchUserPosts(), fetchUserTodos()])
+//     .then(([userData, userPosts, userTodos]) => {
+//         console.log('userData: ', userData)
+//         console.log('userPosts: ', userPosts)
+//         console.log('userTodos: ', userTodos)
 //     })
-//     .then((users) => {
-//         console.log(users)
-//     })
+//     .catch((error) => console.error("something went wrong, ", error.message))
 
-// fetch('https://jsonplaceholder.typicode.com/posts')
-//     .then((response) => {
-//         return response.json()
-//     })
-//     .then((posts) => {
-//         console.log(posts)
-//     })
-
-// fetch('https://jsonplaceholder.typicode.com/posts/1', {
-//     method: "PUT",
-//     body: JSON.stringify({
-//         title: "Test post",
-//         body: "some text...",
-//     })
-// })
-//     .then((response) => {
-//         return response.json()
-//     })
-//     .then((posts) => {
-//         console.log(posts)
-//     })
-
-
-
-// fetch('https://jsonplaceholder.typicode.com/posts')
+// Promise.allSettled([fetchUserData(), fetchUserPosts(), fetchUserTodos()])
 //     .then((response) => {
 //         console.log(response)
-
-//         if (!response.ok) {
-//             throw new Error('Something went wrong!')
-//         }
-
-//         return response.json()
+//         // console.log('userData: ', userData)
+//         // console.log('userPosts: ', userPosts)
+//         // console.log('userTodos: ', userTodos)
 //     })
-//     .then((posts) => {
-//         console.log(posts)
-//         renderPosts(posts)
+//     .catch((error) => console.error("something went wrong, ", error.message))
+
+// Promise.race([fetchUserData(), fetchUserPosts(), fetchUserTodos()])
+//     .then((value) => {
+//         console.log(value)
 //     })
-//     .catch((error) => {
+//     .catch((error) => console.error("something went wrong, ", error.message))
+
+// Promise.any([fetchUserData(), fetchUserPosts(), fetchUserTodos()])
+//     .then((value) => {
+//         console.log(value)
+//     })
+//     .catch((error) => console.error("something went wrong, ", error.message))
+
+// async function getUsersId() {
+//     return ['1', '2']
+// }
+
+
+// getUsersId().then((result) => console.log(result))
+
+// async function fetchUsers() {
+//     try {
+//         const response = await fetch('https://jsonplaceholder.typicode.com/users');
+//         const users = await response.json();
+
+//         return users;
+//     } catch (error) {
 //         console.error(error)
-//     })
-
-// function renderPosts(posts) {
-//     const list = document.querySelector('ul');
-
-//     posts.forEach((post) => {
-//         const li = document.createElement('li')
-//         li.innerHTML = post.title;
-
-//         list.append(li)
-//     })
+//     }
 // }
 
-// const user = {
-//     "id": 1
+// function doSomething() {
+//     console.log('some logic...')
 // }
+
+// async function renderUsers() {
+//     const list = document.querySelector('ul')
+
+//     const users = await fetchUsers();
+
+//     console.log('users: ', users)
+// }
+
+// async = promise
+// await = then
+// catch = catch
+
+// fetchData();
+
+// renderUsers()
+
+// const data = await fetch('https://jsonplaceholder.typicode.com/users');
+
+// fetch('https://jsonplaceholder.typicode.com/users')
+//     .then((response) => response.json())
+//     .then((users) => console.log(users))
+
+let isLoading = false;
+
+async function fetchData() {
+    try {
+        isLoading = true;
+
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+
+        if (!response.ok) {
+            throw new Error('Something went wrong')
+        }
+
+        const users = await response.json();
+        if (users[0].id) {
+            const response2 = await fetch(`https://jsonplaceholder.typicode.com/todos?userId=${users[0].id}`);
+            const todos = await response2.json();
+        }
+
+
+        console.log('users', users)
+        console.log('todos', todos)
+
+        return users;
+    } catch {
+        console.error('Щось трапилось')
+    } finally {
+        isLoading = false;
+
+        // console.log('finally')
+    }
+}
+fetchData()
