@@ -3,16 +3,27 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App</title>
   <link rel="stylesheet" href="./styles.css" />
-  <title>Асинхронне програмування</title>
 </head>
 
 <body>
-  <h1>14. Асинхронне програмування. Частина 3</h1>
-  <img src="https://prjctr.com/assets/build/img/professium/logo-white.svg" alt="prjctr" />
-
-  <ul></ul>
+  <section class="top-banner">
+    <div class="container">
+      <h1 class="heading">Weather App</h1>
+      <form>
+        <input name="city" type="text" placeholder="Search for a city" autofocus />
+        <span class="msg"></span>
+        <button type="submit">SUBMIT</button>
+      </form>
+    </div>
+  </section>
+  <section class="response-section">
+    <div class="container">
+      <ul class="cities"></ul>
+    </div>
+  </section>
+  <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
   <script src="./app.js"></script>
 </body>
 
