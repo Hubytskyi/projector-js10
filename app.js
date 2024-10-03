@@ -1,151 +1,217 @@
 "use strict";
 
-// API URL для отримання інформації про погоду від OpenWeatherMap
-// API KEY використовується для доступу до даних
-// ICON URL для відображення іконки погоди
-
-const form = document.querySelector('form'); // Отримуємо елемент форми
-const citiesList = document.querySelector('.cities'); // Отримуємо список міст, де будуть додані результати погоди
-const msg = document.querySelector('.msg'); // Повідомлення для відображення помилок або попереджень
-const button = document.querySelector('button'); // Кнопка, яку натискають для пошуку погоди
-
-const API_KEY = '2ee487a11d28e30cf3f03fbd384eb369'; // API ключ для OpenWeatherMap
-
-const currentCities = []; // Масив для зберігання міст, для яких вже отримана погода
-
-// Функція для рендерингу даних про місто на сторінці
-function renderCity(city) {
-  const { name, sys, main, weather } = city; // Деструктуризація для отримання даних з об'єкта міста
-
-  msg.innerHTML = ''; // Очищуємо повідомлення
-  currentCities.push(name.toLowerCase()); // Додаємо назву міста в масив поточних міст
-
-  const li = document.createElement('li'); // Створюємо елемент <li> для міста
-  li.classList.add('city'); // Додаємо клас для стилізації
-
-  // Генеруємо URL іконки погоди
-  const iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`
-
-  // Створюємо HTML розмітку для відображення даних про місто
-  const markup = `
-    <h2 class="city-name">
-      <span>${name}</span>
-      <sup>${sys.country}</sup>
-    </h2>
-    <p class="city-temp">${Math.round(main.temp)}°</p>
-    <img class="city-icon" src="${iconUrl}" alt="${weather[0].description}"/>
-    <span>${weather[0].description}</span>
-  `;
-
-  li.innerHTML = markup; // Додаємо розмітку в елемент <li>
-  citiesList.appendChild(li); // Додаємо елемент <li> до списку міст
-
-  form.reset(); // Очищуємо форму після відправлення
-  console.log(city) // Виводимо інформацію про місто в консоль для налагодження
-}
-
-// Функція для отримання даних про місто за допомогою Axios
-async function fetchCityWithAxios(event) {
-  event.preventDefault(); // Зупиняємо перезавантаження сторінки при відправленні форми
-
-  const inputValue = event.target.city.value; // Отримуємо значення введеного міста
-
-  // Перевіряємо, чи вже є місто в поточному списку
-  if (currentCities.includes(inputValue.toLowerCase())) {
-    msg.innerHTML = `You already know the weather for ${inputValue}`; // Повідомляємо, що погода для цього міста вже відома
-    return null;
+// Клас для роботи з API GitHub
+class GitHubAPI {
+  constructor() {
+    // Базова URL адреса API GitHub для отримання користувачів
+    this.baseURL = 'https://api.github.com/users';
+    // Токен для аутентифікації 
+    this.token = ''
   }
 
-  // Перевіряємо, чи поле вводу не пусте
-  if (!inputValue.trim()) {
-    msg.innerHTML = `Input can't be empty`; // Виводимо повідомлення, що поле не може бути порожнім
-    return null;
-  };
-
-  // Формуємо URL для запиту до API OpenWeatherMap з введеною назвою міста та одиницями виміру в метриках
-  const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_KEY}&units=metric`;
-
-  try {
-    button.setAttribute('disabled', ''); // Відключаємо кнопку, щоб уникнути повторного кліку під час запиту
-
-    const result = await axios.get(apiURL); // Виконуємо запит до API з Axios
-    renderCity(result.data); // Відправляємо результат на рендеринг
-  } catch (error) {
-    // Обробляємо можливі помилки та відображаємо повідомлення
-    msg.innerHTML = error.response?.data?.message || error.message || "Something went wrong :(";
-    form.reset(); // Очищуємо форму
-  } finally {
-    button.removeAttribute('disabled'); // Відновлюємо кнопку після виконання запиту
+  // Асинхронний метод для отримання інформації про користувача за username
+  async getUser(username) {
+    try {
+      // Відправка GET-запиту до API GitHub з використанням токена аутентифікації
+      const response = await axios.get(`${this.baseURL}/${username}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`
+        }
+      });
+      // Повернення даних користувача з API
+      return response.data;
+    } catch (error) {
+      // Обробка помилок, якщо запит до API не вдався
+      if (error.response) {
+        // Обробка помилок залежно від статусу HTTP відповіді
+        switch (error.response.status) {
+          case 404:
+            throw new Error('User not found.'); // Якщо користувача не знайдено
+          case 403:
+            throw new Error('API rate limit exceeded.'); // Якщо перевищено ліміт запитів до API
+          default:
+            throw new Error(`Server error: `, error.response.status); // Інші серверні помилки
+        }
+      } else {
+        // Помилка без відповіді від сервера
+        throw new Error('Something went wrong');
+      }
+    }
   }
 }
 
-// Додаємо обробник події на відправлення форми, який викликає функцію fetchCityWithAxios
-form.addEventListener('submit', fetchCityWithAxios);
+// Клас для управління інтерфейсом користувача
+class UI {
+  constructor() {
+    // Отримання елементів DOM для форми пошуку та відображення результатів
+    this.searchForm = document.querySelector('#searchForm');
+    this.searchInput = document.querySelector('#searchInput');
+    this.resultsContainer = document.querySelector('#resultsContainer');
+    this.loadingIndicator = document.querySelector('#loadingIndicator');
 
-// function fetchCity(event) {
-//   event.preventDefault();
+    // Ініціалізація об'єкта для роботи з API
+    this.githubApi = new GitHubAPI();
 
-//   const inputValue = event.target.city.value;
+    // Виклик методу для ініціалізації обробників подій
+    this.initializeEventListeners();
+  }
 
-//   if (currentCities.includes(inputValue.toLowerCase())) {
-//     msg.innerHTML = `You already know the weather for ${inputValue}`;
+  // Метод для ініціалізації подій (обробник події форми)
+  initializeEventListeners() {
+    this.searchForm.addEventListener('submit', (e) => {
+      e.preventDefault(); // Запобігання перезавантаженню сторінки при сабміті форми
 
-//     return null;
-//   }
+      this.handleSearch(); // Виклик методу пошуку користувача
+    });
+  }
 
-//   if (!inputValue.trim()) {
-//     msg.innerHTML = `Input can't be empty`;
+  // Метод для обробки пошуку користувача
+  async handleSearch() {
+    // Отримання введеного імені користувача з поля пошуку
+    const username = this.searchInput.value.trim();
 
-//     return null;
-//   };
+    // Якщо ім'я користувача порожнє, показати повідомлення про помилку
+    if (!username) {
+      this.showError('Please enter a Github username!');
+      return;
+    }
 
-//   const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_KEY}&units=metric`;
+    // Очищення попередніх результатів і показ індикатора завантаження
+    this.clearResult();
+    this.setLoading(true);
 
-//   fetch(apiURL)
-//     .then((response) => {
-//       if (!response.ok) {
-//         throw new Error('Something went wrong')
-//       }
+    try {
+      // Отримання даних користувача з API
+      const user = await this.githubApi.getUser(username);
+      this.displayUserProfile(user); // Відображення профілю користувача
+    } catch (error) {
+      this.showError(error.message); // Відображення помилки, якщо запит не вдався
+    } finally {
+      this.setLoading(false); // Приховати індикатор завантаження
+    }
+  }
 
-//       return response.json()
-//     })
-//     .then(renderCity)
-//     .catch((error) => {
-//       msg.innerHTML = error.message;
-//       form.reset();
-//     })
-// }
+  // Метод для показу/приховування індикатора завантаження та блокування поля вводу
+  setLoading(isLoading) {
+    this.loadingIndicator.style.display = isLoading ? 'block' : 'none';
+    this.searchInput.disabled = isLoading;
 
-// async function fetchCityWithAsync(event) {
-//   event.preventDefault();
+    // Блокування кнопки пошуку, якщо йде завантаження
+    const searchButton = this.searchForm.querySelector('button');
+    if (searchButton) {
+      searchButton.disabled = isLoading;
+    }
+  }
 
-//   const inputValue = event.target.city.value;
+  // Метод для відображення повідомлення про помилку
+  showError(message) {
+    const errorHTML = `
+     <div class="error-container text-center py-5">
+        <div class="text-danger mb-3">
+          <i class="bi bi-exclamation-circle" style="font-size: 3rem;"></i>
+        </div>
+        <h3 class="h4 mb-3">Oops! Something went wrong</h3>
+        <p class="text-muted mb-3">${message}</p>
+      </div>
+    `;
+    // Відображення повідомлення про помилку в контейнері результатів
+    this.resultsContainer.innerHTML = errorHTML;
+  }
 
-//   if (currentCities.includes(inputValue.toLowerCase())) {
-//     msg.innerHTML = `You already know the weather for ${inputValue}`;
+  // Метод для очищення результатів
+  clearResult() {
+    this.resultsContainer.innerHTML = '';
+  }
 
-//     return null;
-//   }
+  // Метод для відображення профілю користувача GitHub
+  displayUserProfile(user) {
+    const userHTML = `
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <img src="${user.avatar_url}" class="avatar" alt="Profile avatar">
+            <div>
+              <h2 class="mb-0">${user.name || user.login}</h2>
+              ${user.login ? `<p class="text-muted mb-0">@${user.login}</p>` : ''}
+            </div>
+          </div>
+          <a href="${user.html_url}" target="_blank" class="btn btn-primary">
+            <i class="bi bi-box-arrow-up-right"></i> View Profile
+          </a>
+        </div>
+        <div class="card-body">
+          ${user.bio ? `
+            <div class="alert alert-light" role="alert">
+              <i class="bi bi-quote"></i> ${user.bio}
+            </div>
+          ` : ''}
+          
+          <div class="row mb-3">
+            <div class="col-md-3 col-6 mb-2">
+              <div class="card h-100">
+                <div class="card-body text-center">
+                  <h5 class="mb-1">${user.followers}</h5>
+                  <small class="text-muted">Followers</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6 mb-2">
+              <div class="card h-100">
+                <div class="card-body text-center">
+                  <h5 class="mb-1">${user.following}</h5>
+                  <small class="text-muted">Following</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6 mb-2">
+              <div class="card h-100">
+                <div class="card-body text-center">
+                  <h5 class="mb-1">${user.public_repos}</h5>
+                  <small class="text-muted">Repositories</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6 mb-2">
+              <div class="card h-100">
+                <div class="card-body text-center">
+                  <h5 class="mb-1">${user.public_gists}</h5>
+                  <small class="text-muted">Gists</small>
+                </div>
+              </div>
+            </div>
+          </div>
 
-//   if (!inputValue.trim()) {
-//     msg.innerHTML = `Input can't be empty`;
+          <ul class="list-group">
+            ${user.company ? `
+              <li class="list-group-item">
+                <i class="bi bi-building"></i> ${user.company}
+              </li>
+            ` : ''}
+            ${user.location ? `
+              <li class="list-group-item">
+                <i class="bi bi-geo-alt"></i> ${user.location}
+              </li>
+            ` : ''}
+            ${user.blog ? `
+              <li class="list-group-item">
+                <i class="bi bi-link"></i> 
+                <a href="${user.blog}" target="_blank">${user.blog}</a>
+              </li>
+            ` : ''}
+            <li class="list-group-item">
+              <i class="bi bi-calendar"></i> 
+              Joined: ${new Date(user.created_at).toLocaleDateString()}
+            </li>
+          </ul>
+        </div>
+      </div>
+    `;
+    // Відображення профілю користувача в контейнері результатів
+    this.resultsContainer.innerHTML = userHTML;
+  }
+}
 
-//     return null;
-//   };
-
-//   const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_KEY}&units=metric`;
-
-//   try {
-//     const response = await fetch(apiURL);
-
-//     if (!response.ok) {
-//       throw new Error('Something went wrong')
-//     }
-
-//     const result = await response.json();
-//     renderCity(result);
-//   } catch {
-//     msg.innerHTML = error.message;
-//     form.reset();
-//   }
-// }
+// Ініціалізація інтерфейсу після завантаження DOM
+document.addEventListener('DOMContentLoaded', () => {
+  new UI();
+});
